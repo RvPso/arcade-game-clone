@@ -1,13 +1,17 @@
-var enemyPos = [215, 215 - 80 , 220 - 165];
+var enemyPosY = [215, 215 - 80 , 220 - 165];
+var enemyPosX = [-80, -160, -160, -320];
 var speed;
-var rand;    
+var rand;
+var score = 0;
+var lives = 3;
 // Enemies our player must avoid
-var Enemy = function(pos) {
+var Enemy = function() {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
-    shuffle(enemyPos);
-    this.y = enemyPos[1];
-    this.x = -80;
+    shuffle(enemyPosY);
+    shuffle(enemyPosX);
+    this.y = enemyPosY[1];
+    this.x = enemyPosX[1];
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
@@ -18,7 +22,7 @@ var Enemy = function(pos) {
 Enemy.prototype.update = function(dt) {
     rand = getRandomInt(1,3);
     if (rand == 1) {
-        speed = 3
+        speed = 1
     } else if (rand == 2) {
         speed = 9
     } else if (rand == 3) {
@@ -26,9 +30,10 @@ Enemy.prototype.update = function(dt) {
     }
     this.x = this.x + speed;
     if (this.x  >= 500) {
-    this.y = enemyPos[1];
-    this.x = -80;
-    shuffle(enemyPos);
+    this.y = enemyPosY[1];
+    this.x = enemyPosX[1];
+    shuffle(enemyPosY);
+    shuffle(enemyPosX);
     rand = getRandomInt(1,3);
     /*console.log(randSpeed);*/
     }
@@ -38,7 +43,14 @@ Enemy.prototype.update = function(dt) {
         30 + player.y > this.y) {
         player.x = 200;
         player.y = 380;
-        
+        lives--
+            if (lives == 0) {
+                swal("Game Over","You've finished the game with score: " + score, "success");
+                score = 0;
+                lives = 3;
+                $('p').remove();
+                $('body').append('<p>score: ' + score + '</p>')
+            }
     }
     
     /*var randSpeed = Math.floor((Math.random()*30)+1);*/
@@ -68,6 +80,10 @@ Player.prototype.update = function(dt) {
     } if (this.y == -20) {
         this.x = 200;
         this.y = 380;
+        /*swal("Good job!", "You've won the game", "success");*/
+        score++;
+        $('p').remove()
+        $('body').append('<p>score: ' + score + '</p>')
     }
     
 };
@@ -98,7 +114,6 @@ var enemy = new Enemy();
 var enemy2 = new Enemy();
 var enemy3 = new Enemy();
 var enemy4 = new Enemy();
-var enemy5 = new Enemy();
 var enemy5 = new Enemy();
 var allEnemies = [enemy, enemy2, enemy3, enemy4, enemy5];
 var player = new Player();
