@@ -1,8 +1,13 @@
+var enemyPos = [215, 215 - 80 , 220 - 165];
+var speed;
+var rand;    
 // Enemies our player must avoid
-var Enemy = function() {
+var Enemy = function(pos) {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
-
+    shuffle(enemyPos);
+    this.y = enemyPos[1];
+    this.x = -80;
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
@@ -11,9 +16,32 @@ var Enemy = function() {
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
 Enemy.prototype.update = function(dt) {
-    // You should multiply any movement by the dt parameter
-    // which will ensure the game runs at the same speed for
-    // all computers.
+    rand = getRandomInt(1,3);
+    if (rand == 1) {
+        speed = 3
+    } else if (rand == 2) {
+        speed = 9
+    } else if (rand == 3) {
+        speed = 12
+    }
+    this.x = this.x + speed;
+    if (this.x  >= 500) {
+    this.y = enemyPos[1];
+    this.x = -80;
+    shuffle(enemyPos);
+    rand = getRandomInt(1,3);
+    /*console.log(randSpeed);*/
+    }
+        if (player.x < this.x + 60 &&
+        player.x + 37 > this.x &&
+        player.y < this.y + 25 &&
+        30 + player.y > this.y) {
+        player.x = 200;
+        player.y = 380;
+        
+    }
+    
+    /*var randSpeed = Math.floor((Math.random()*30)+1);*/
 };
 
 // Draw the enemy on the screen, required method for game
@@ -31,6 +59,16 @@ var Player = function() {
 }
 
 Player.prototype.update = function(dt) {
+    if (this.x < 0) {
+        this.x = 0;
+    } if (this.x > 400) {
+        this.x = 400;
+    } if (this.y > 380) {
+        this.y = 380;
+    } if (this.y == -20) {
+        this.x = 200;
+        this.y = 380;
+    }
     
 };
 
@@ -57,7 +95,12 @@ Player.prototype.handleInput = function(key) {
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
 var enemy = new Enemy();
-var allEnemies = [enemy];
+var enemy2 = new Enemy();
+var enemy3 = new Enemy();
+var enemy4 = new Enemy();
+var enemy5 = new Enemy();
+var enemy5 = new Enemy();
+var allEnemies = [enemy, enemy2, enemy3, enemy4, enemy5];
 var player = new Player();
 
 // This listens for key presses and sends the keys to your
@@ -72,3 +115,26 @@ document.addEventListener('keyup', function(e) {
 
     player.handleInput(allowedKeys[e.keyCode]);
 });
+
+
+function shuffle(array) {
+    var currentIndex = array.length, temporaryValue, randomIndex;
+
+    // While there remain elements to shuffle...
+    while (0 !== currentIndex) {
+
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+
+    // And swap it with the current element.
+    temporaryValue = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temporaryValue;
+  }
+
+    return array;
+}
+function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1) + min);
+}
