@@ -1,17 +1,31 @@
+// Declaring variables
 var enemyPosY = [215, 215 - 80 , 220 - 165];
 var enemyPosX = [-80, -160, -160, -320];
 var speed;
 var rand;
 var score = 0;
-var lives = 3;
+var hearts = 3;
 // Enemies our player must avoid
 var Enemy = function() {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
+    // Randomizing enemies' positions
     shuffle(enemyPosY);
     shuffle(enemyPosX);
     this.y = enemyPosY[1];
     this.x = enemyPosX[1];
+    // Randomizing enemy's speed
+    rand = getRandomInt(1,4);
+    if (rand == 1) {
+        speed = 200;
+    } else if (rand == 2) {
+        speed = 300;
+    } else if (rand == 3) {
+        speed = 400;
+    } else if (rand == 4) {
+        speed = 600;
+    }
+    this.speed = speed;
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
@@ -20,40 +34,40 @@ var Enemy = function() {
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
 Enemy.prototype.update = function(dt) {
-    rand = getRandomInt(1,3);
-    if (rand == 1) {
-        speed = 1
-    } else if (rand == 2) {
-        speed = 9
-    } else if (rand == 3) {
-        speed = 12
-    }
-    this.x = this.x + speed;
+    // Applying enemy's speed
+    this.x = this.x + this.speed * dt;
+    // Loop enemies' through the canvas
     if (this.x  >= 500) {
     this.y = enemyPosY[1];
     this.x = enemyPosX[1];
     shuffle(enemyPosY);
     shuffle(enemyPosX);
-    rand = getRandomInt(1,3);
-    /*console.log(randSpeed);*/
     }
-        if (player.x < this.x + 60 &&
-        player.x + 37 > this.x &&
-        player.y < this.y + 25 &&
-        30 + player.y > this.y) {
-        player.x = 200;
-        player.y = 380;
-        lives--
-            if (lives == 0) {
-                swal("Game Over","You've finished the game with score: " + score, "success");
-                score = 0;
-                lives = 3;
-                $('p').remove();
-                $('body').append('<p>score: ' + score + '</p>')
-            }
-    }
-    
-    /*var randSpeed = Math.floor((Math.random()*30)+1);*/
+    // Player and enemy colliding resets the player
+    // and decreases player's lives by one
+    if (player.x < this.x + 60 &&
+    player.x + 37 > this.x &&
+    player.y < this.y + 25 &&
+    30 + player.y > this.y) {
+    player.x = 200;
+    player.y = 380;
+    hearts--
+    $('.lives').remove();
+    $('p').remove();    
+    $('body').append('<p>Score: ' + score + '</p>')    
+    lives();
+    // When the player is out of lives the game resets
+    // and a pop up displaying player's score
+    if (hearts == 0) {
+    swal("Game Over","You've finished the game with score: " + score, "success");
+    score = 0;
+    hearts = 3;
+    $('p').remove();
+    $('.lives').remove;
+    $('body').append('<p>Score: ' + score + '</p>')
+    lives();
+}
+}
 };
 
 // Draw the enemy on the screen, required method for game
@@ -71,19 +85,22 @@ var Player = function() {
 }
 
 Player.prototype.update = function(dt) {
+    // Player can't go off screen
     if (this.x < 0) {
         this.x = 0;
     } if (this.x > 400) {
         this.x = 400;
     } if (this.y > 380) {
         this.y = 380;
+    // When player reaches the water he gains score
     } if (this.y == -20) {
         this.x = 200;
         this.y = 380;
-        /*swal("Good job!", "You've won the game", "success");*/
         score++;
-        $('p').remove()
-        $('body').append('<p>score: ' + score + '</p>')
+        $('p').remove();
+        $('.lives').remove();
+        $('body').append('<p>score: ' + score + '</p>');
+        lives();
     }
     
 };
@@ -152,4 +169,23 @@ function shuffle(array) {
 }
 function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
+function lives() {
+    // Display 3 hearts when layer got 3 lives
+    //  and so on...
+    if (hearts == 3) {
+    $('body').append('<img class = "lives" src="images/Heart.png">');
+    $('body').append('<img class = "lives" src="images/Heart.png">');
+    $('body').append('<img class = "lives" src="images/Heart.png">');
+        } else if (hearts == 2) {
+            
+            $('body').append('<img class = "lives" src="images/Heart.png">');
+            $('body').append('<img class = "lives" src="images/Heart.png">');
+        } else if (hearts == 1) {
+            
+            $('body').append('<img class = "lives" src="images/Heart.png">');
+        } else if (hearts == 0) {
+            
+        }
 }
