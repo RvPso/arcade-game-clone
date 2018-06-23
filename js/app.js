@@ -38,34 +38,34 @@ Enemy.prototype.update = function(dt) {
     this.x = this.x + this.speed * dt;
     // Loop enemies' through the canvas
     if (this.x  >= 500) {
-    this.y = enemyPosY[1];
-    this.x = enemyPosX[1];
-    shuffle(enemyPosY);
-    shuffle(enemyPosX);
+        this.y = enemyPosY[1];
+        this.x = enemyPosX[1];
+        shuffle(enemyPosY);
+        shuffle(enemyPosX);
     }
     // Player and enemy colliding resets the player
     // and decreases player's lives by one
     if (player.x < this.x + 60 &&
-    player.x + 37 > this.x &&
-    player.y < this.y + 25 &&
-    30 + player.y > this.y) {
-    player.x = 200;
-    player.y = 380;
-    hearts--
-    $('.lives').remove();
-    $('p').remove();    
-    $('body').append('<p>Score: ' + score + '</p>')    
-    lives();
+        player.x + 37 > this.x &&
+        player.y < this.y + 25 &&
+        30 + player.y > this.y) {
+        player.x = 200;
+        player.y = 380;
+        hearts--;
+        $('.lives').remove();
+        $('p').remove();    
+        $('body').append('<p>Score: ' + score + '</p>')    
+        lives();
     // When the player is out of lives the game resets
     // and a pop up displaying player's score
     if (hearts == 0) {
-    swal("Game Over","You've finished the game with score: " + score, "success");
-    score = 0;
-    hearts = 3;
-    $('p').remove();
-    $('.lives').remove;
-    $('body').append('<p>Score: ' + score + '</p>')
-    lives();
+        swal("Game Over","You've finished the game with score: " + score, "success");
+        score = 0;
+        hearts = 3;
+        $('p').remove();
+        $('.lives').remove;
+        $('body').append('<p>Score: ' + score + '</p>')
+        lives();
 }
 }
 };
@@ -175,17 +175,15 @@ function lives() {
     // Display 3 hearts when layer got 3 lives
     //  and so on...
     if (hearts == 3) {
-    $('body').append('<img class = "lives" src="images/Heart.png">');
-    $('body').append('<img class = "lives" src="images/Heart.png">');
-    $('body').append('<img class = "lives" src="images/Heart.png">');
-        } else if (hearts == 2) {
-            
-            $('body').append('<img class = "lives" src="images/Heart.png">');
-            $('body').append('<img class = "lives" src="images/Heart.png">');
-        } else if (hearts == 1) {
-            
-            $('body').append('<img class = "lives" src="images/Heart.png">');
-        } else if (hearts == 0) {
-            
+        $('body').append('<img class = "lives" src="images/Heart.png">');
+        $('body').append('<img class = "lives" src="images/Heart.png">');
+        $('body').append('<img class = "lives" src="images/Heart.png">');
+        }
+    if (hearts == 2) {
+        $('body').append('<img class = "lives" src="images/Heart.png">');
+        $('body').append('<img class = "lives" src="images/Heart.png">');
+        }
+        if (hearts == 1) {
+        $('body').append('<img class = "lives" src="images/Heart.png">');
         }
 }
