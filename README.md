@@ -6,3 +6,10 @@ where you lose them by hitting the enemy bugs.
 
 In order to play the game properly, follow these steps:
 
+1. Download the project
+
+2. Open index.html file
+
+3. Make sure you're online
+
+4. Enjoy the game
