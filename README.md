@@ -13,3 +13,7 @@ In order to play the game properly, follow these steps:
 3. Make sure you're online
 
 4. Enjoy the game
+
+## Controls
+
+You control the player with the arrow keys.
